@@ -13,3 +13,14 @@ zerops:
         - ./node_modules
     run:
       start: node api/main
+
+  - setup: app
+    build:
+      base: nodejs@20
+      buildCommands:
+        - |
+          export NODE_ENV=development
+          npm i
+          npm run build app
+      deploy:
+        - ./dist/apps/~/app

@@ -28,6 +28,25 @@ services:
     buildFromGit: https://github.com/fxck/zerops-hello-upload
     minContainers: 1
 
+  - hostname: app
+    type: nginx@1.22
+    nginxConfig: |-
+      server {
+          listen 80 default_server;
+          listen [::]:80 default_server;
+
+          server_name _;
+          root /var/www;
+
+          location / {
+              try_files $uri $uri/ /index.html;
+          }
+
+          access_log syslog:server=unix:/dev/log,facility=local1 default_short;
+          error_log syslog:server=unix:/dev/log,facility=local1;
+      }
+    minContainers: 1
+
   - hostname: adminer
     type: php-apache@8.0+2.4
     buildFromGit: https://github.com/zeropsio/recipe-adminer@main
