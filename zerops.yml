@@ -26,5 +26,5 @@ zerops:
         - ./dist/apps/app/~
     run:
       envReplace:
-        target: ./apps/app
+        target: ./
         delimiter: "%%"
