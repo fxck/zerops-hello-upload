@@ -22,7 +22,8 @@ export class AppController {
   async uploadFile(
     @UploadedFile()
     file: Express.Multer.File,
-    @Body('target') target: string,
+    @Body('target')
+    target: string,
   ) {
     return await this.appService.uploadFile(file, target);
   }

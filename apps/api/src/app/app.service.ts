@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { S3 } from 'aws-sdk';
@@ -7,6 +7,7 @@ import { FileEntity } from './file.entity';
 
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
   private s3: S3;
 
   constructor(
@@ -22,24 +23,38 @@ export class AppService {
     };
 
     this.s3 = new S3(s3Config);
+    this.logger.log('AppService initialized');
   }
 
-  async uploadFile(
-    file: Express.Multer.File,
-    target: string,
-  ): Promise<FileEntity> {
-    switch (target) {
-      case 'SHARED_STORAGE':
-        return this.uploadToSharedStorage(file);
-      case 'OBJECT_STORAGE':
-        return this.uploadToS3(file);
-      default:
+  async uploadFile(file: Express.Multer.File, target: string): Promise<FileEntity> {
+    this.logger.log(`Uploading file: ${file.originalname} to ${target}`);
+    try {
+      let result;
+      if (target === 'SHARED_STORAGE') {
+        result = await this.uploadToSharedStorage(file);
+      } else if (target === 'OBJECT_STORAGE') {
+        result = await this.uploadToS3(file);
+      } else {
         throw new Error('Invalid target specified');
+      }
+      this.logger.log(`File uploaded successfully: ${file.originalname}`);
+      return result;
+    } catch (error) {
+      this.logger.error(`Error uploading file: ${file.originalname}`, error.stack);
+      throw error;
     }
   }
 
   async listFiles(): Promise<FileEntity[]> {
-    return await this.fileRepository.find();
+    this.logger.log('Listing all files');
+    try {
+      const files = await this.fileRepository.find();
+      this.logger.log(`Found ${files.length} files`);
+      return files;
+    } catch (error) {
+      this.logger.error('Error listing files', error.stack);
+      throw error;
+    }
   }
 
   private async uploadToSharedStorage(
@@ -56,35 +71,30 @@ export class AppService {
   }
 
   async uploadToS3(file: Express.Multer.File): Promise<FileEntity> {
-    const uploadResult = await this.s3
-      .upload({
+    try {
+      const uploadResult = await this.s3.upload({
         Bucket: this.configService.get<string>('STORAGE_BUCKET_NAME'),
         Key: file.originalname,
         Body: file.buffer,
-      })
-      .promise();
-
-    const fileEntity = await this.saveFileMetadata(
-      file.originalname,
-      uploadResult.Location,
-      'OBJECT_STORAGE',
-    );
-    return fileEntity;
+      }).promise();
+      this.logger.log(`File uploaded to S3: ${file.originalname}`);
+      return this.saveFileMetadata(file.originalname, uploadResult.Location, 'OBJECT_STORAGE');
+    } catch (error) {
+      this.logger.error(`Error uploading file to S3: ${file.originalname}`, error.stack);
+      throw error;
+    }
   }
 
-  private async saveFileMetadata(
-    filename: string,
-    path: string,
-    target: string,
-  ): Promise<FileEntity> {
-    const file = this.fileRepository.create({
-      filename,
-      path,
-      target,
-    });
-
-    await this.fileRepository.save(file);
-
-    return file;
+  private async saveFileMetadata(filename: string, path: string, target: string): Promise<FileEntity> {
+    try {
+      const file = this.fileRepository.create({ filename, path, target });
+      await this.fileRepository.save(file);
+      this.logger.log(`File metadata saved: ${filename}`);
+      return file;
+    } catch (error) {
+      this.logger.error(`Error saving file metadata: ${filename}`, error.stack);
+      throw error;
+    }
   }
 }
+
