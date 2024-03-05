@@ -15,11 +15,12 @@ export class AppService {
     private fileRepository: Repository<FileEntity>,
     private configService: ConfigService,
   ) {
-    const s3Config = {
+    const s3Config: S3.ClientConfiguration = {
       endpoint: this.configService.get<string>('STORAGE_API_URL'),
       accessKeyId: this.configService.get<string>('STORAGE_ACCESS_KEY_ID'),
       secretAccessKey: this.configService.get<string>('STORAGE_SECRET_KEY'),
       s3ForcePathStyle: true,
+      region: 'us-east-1'
     };
 
     this.s3 = new S3(s3Config);
