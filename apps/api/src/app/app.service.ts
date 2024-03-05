@@ -23,6 +23,7 @@ export class AppService {
     };
 
     this.s3 = new S3(s3Config);
+    this.logger.log(`S3 Config: ${JSON.stringify(s3Config)}`);
     this.logger.log('AppService initialized');
   }
 

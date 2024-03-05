@@ -38,7 +38,7 @@ export class AppComponent {
     formData.append('file', this.selectedFile, this.selectedFile.name);
     formData.append('target', 'OBJECT_STORAGE');
 
-    this.#http.post('https://api-14-3000.prg1.zerops.app/upload', formData).subscribe({
+    this.#http.post('http://93.185.106.132:3000/upload', formData).subscribe({
       next: (response) => console.log('Upload successful', response),
       error: (error) => console.error('Upload failed', error)
     });
