@@ -62,17 +62,12 @@ export class AppService {
   }
 
   private async uploadToSharedStorage(file: Express.Multer.File): Promise<FileEntity> {
-    const sharedStoragePath = `/var/www/data/${file.originalname}`;
-    const directoryPath = path.dirname(sharedStoragePath);
-
-    // Ensure the directory exists (create it if necessary)
-    await fs.mkdir(directoryPath, { recursive: true });
-
-    // Write the file to the shared storage
-    await fs.writeFile(sharedStoragePath, file.buffer);
-
-    // Save and return file metadata
-    return this.saveFileMetadata(file.originalname, sharedStoragePath, 'SHARED_STORAGE');
+    const relativeStoragePath = `data/${file.originalname}`;
+    const absoluteStoragePath = `/var/www/${relativeStoragePath}`;
+    await fs.mkdir(path.dirname(absoluteStoragePath), { recursive: true });
+    await fs.writeFile(absoluteStoragePath, file.buffer);
+    const accessiblePath = `${relativeStoragePath}`;
+    return this.saveFileMetadata(file.originalname, accessiblePath, 'SHARED_STORAGE');
   }
 
   async uploadToS3(file: Express.Multer.File): Promise<FileEntity> {
