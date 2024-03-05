@@ -6,7 +6,7 @@ zerops:
         - |
           export NODE_ENV=development
           npm i
-          nx build api
+          npm run build api
       deploy:
         - ./dist/apps/~/api
         - ./package.json
