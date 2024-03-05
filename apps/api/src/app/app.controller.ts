@@ -14,7 +14,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {
+    limits: {
+      fileSize: 100 * 1024 * 1024
+    }
+  }))
   async uploadFile(
     @UploadedFile()
     file: Express.Multer.File,
