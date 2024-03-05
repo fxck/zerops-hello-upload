@@ -21,7 +21,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class AppComponent {
   #http = inject(HttpClient);
-  #data$ = this.#http.get('https://api-14-3000.prg1.zerops.app');
+  #data$ = this.#http.get('http://93.185.106.132:3000');
   dataSignal = toSignal(this.#data$);
 
   selectedFile!: File | null;
