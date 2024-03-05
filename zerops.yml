@@ -24,3 +24,7 @@ zerops:
           npm run build app
       deploy:
         - ./dist/apps/app/~
+    run:
+      envReplace:
+        target: ./apps/app
+        delimiter: "%%"
