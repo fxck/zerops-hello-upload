@@ -23,4 +23,4 @@ zerops:
           npm i
           npm run build app
       deploy:
-        - ./dist/apps/~/app
+        - ./dist/apps/app/~
