@@ -66,7 +66,7 @@ export class AppService {
     const absoluteStoragePath = `/var/www/${relativeStoragePath}`;
     await fs.mkdir(path.dirname(absoluteStoragePath), { recursive: true });
     await fs.writeFile(absoluteStoragePath, file.buffer);
-    const accessiblePath = `${relativeStoragePath}`;
+    const accessiblePath = `${this.configService.get<string>('URL')}${relativeStoragePath}`;
     return this.saveFileMetadata(file.originalname, accessiblePath, 'SHARED_STORAGE');
   }
 
