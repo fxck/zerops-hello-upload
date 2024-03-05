@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -20,5 +21,10 @@ export class AppController {
     @Body('target') target: string,
   ) {
     return await this.appService.uploadFile(file, target);
+  }
+
+  @Get()
+  async getFiles() {
+    return this.appService.listFiles();
   }
 }

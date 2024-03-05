@@ -38,6 +38,10 @@ export class AppService {
     }
   }
 
+  async listFiles(): Promise<FileEntity[]> {
+    return await this.fileRepository.find();
+  }
+
   private async uploadToSharedStorage(
     file: Express.Multer.File,
   ): Promise<FileEntity> {
