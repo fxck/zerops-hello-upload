@@ -1,7 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { promises as fs } from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { S3 } from 'aws-sdk';
+import * as path from 'path';
 import { Repository } from 'typeorm';
 import { FileEntity } from './file.entity';
 
@@ -59,17 +61,18 @@ export class AppService {
     }
   }
 
-  private async uploadToSharedStorage(
-    file: Express.Multer.File,
-  ): Promise<FileEntity> {
-    const sharedStoragePath = `/path/to/shared/storage/${file.originalname}`;
+  private async uploadToSharedStorage(file: Express.Multer.File): Promise<FileEntity> {
+    const sharedStoragePath = `/var/www/data/${file.originalname}`;
+    const directoryPath = path.dirname(sharedStoragePath);
 
-    const fileEntity = await this.saveFileMetadata(
-      file.originalname,
-      sharedStoragePath,
-      'SHARED_STORAGE',
-    );
-    return fileEntity;
+    // Ensure the directory exists (create it if necessary)
+    await fs.mkdir(directoryPath, { recursive: true });
+
+    // Write the file to the shared storage
+    await fs.writeFile(sharedStoragePath, file.buffer);
+
+    // Save and return file metadata
+    return this.saveFileMetadata(file.originalname, sharedStoragePath, 'SHARED_STORAGE');
   }
 
   async uploadToS3(file: Express.Multer.File): Promise<FileEntity> {
