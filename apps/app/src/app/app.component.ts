@@ -158,7 +158,7 @@ export class AppComponent {
     );
     formData.append(
       'target',
-      'OBJECT_STORAGE'
+      this.selectedTarget()
     );
 
     this.#http
