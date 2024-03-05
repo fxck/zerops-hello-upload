@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../environments/environment';
 
 type Targets = 'OBJECT_STORAGE' | 'SHARED_STORAGE';
 
@@ -161,7 +162,7 @@ export class AppComponent {
     );
 
     this.#http
-      .post('https://api-14-3000.prg1.zerops.app/upload', formData)
+      .post(`${environment.apiUrl}/upload`, formData)
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
         next: (response) => {
@@ -176,7 +177,7 @@ export class AppComponent {
 
   #loadData() {
     this.#http
-      .get<FileEntity[]>('https://api-14-3000.prg1.zerops.app')
+      .get<FileEntity[]>(environment.apiUrl)
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((d) => this.#data$.next(d))
   }
