@@ -45,6 +45,7 @@ services:
           access_log syslog:server=unix:/dev/log,facility=local1 default_short;
           error_log syslog:server=unix:/dev/log,facility=local1;
       }
+    enableSubdomainAccess: true
     buildFromGit: https://github.com/fxck/zerops-hello-upload
     minContainers: 1
 
