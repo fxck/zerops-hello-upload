@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors();
 
   // Serve static files from /var/www/data under the /static path
-  app.use('/static', express.static(join(__dirname, '..', 'data')));
+  app.use('/data', express.static(join(__dirname, '..', 'data')));
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
