@@ -30,6 +30,8 @@ services:
 
   - hostname: app
     type: nginx@1.22
+    envSecrets:
+      API_URL: ${api_zeropsSubdomain}
     nginxConfig: |-
       server {
           listen 80 default_server;
