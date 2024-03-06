@@ -21,6 +21,7 @@ services:
       STORAGE_SECRET_KEY: ${storage_secretKey}
       STORAGE_ACCESS_KEY_ID: ${storage_accessKeyId}
       STORAGE_BUCKET_NAME: ${storage_bucketName}
+      URL: ${zeropsSubdomain}
     ports:
       - port: 3000
         httpSupport: true
