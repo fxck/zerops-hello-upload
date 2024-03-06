@@ -28,6 +28,7 @@ services:
     enableSubdomainAccess: true
     buildFromGit: https://github.com/fxck/zerops-hello-upload
     minContainers: 1
+    priority: 10
 
   - hostname: app
     type: nginx@1.22
@@ -63,10 +64,10 @@ services:
     type: object-storage
     policy: public-read
     objectStorageSize: 2
-    priority: 1
+    priority: 10
 
   - hostname: db
     type: postgresql@14
     mode: NON_HA
-    priority: 1
+    priority: 10
 ```
