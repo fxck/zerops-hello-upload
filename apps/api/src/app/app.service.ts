@@ -76,6 +76,7 @@ export class AppService {
         Bucket: this.configService.get<string>('STORAGE_BUCKET_NAME'),
         Key: file.originalname,
         Body: file.buffer,
+        ContentDisposition: 'inline'
       }).promise();
       this.logger.log(`File uploaded to S3: ${file.originalname}`);
       return this.saveFileMetadata(file.originalname, uploadResult.Location, 'OBJECT_STORAGE');
