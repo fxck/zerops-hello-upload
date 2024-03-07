@@ -66,6 +66,12 @@ services:
     objectStorageSize: 2
     priority: 10
 
+  - hostname: sharedstorage
+    type: shared-storage
+    mode: NON_HA
+    mount:
+      - api
+
   - hostname: db
     type: postgresql@14
     mode: NON_HA
