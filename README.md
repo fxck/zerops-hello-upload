@@ -22,6 +22,7 @@ services:
       STORAGE_ACCESS_KEY_ID: ${storage_accessKeyId}
       STORAGE_BUCKET_NAME: ${storage_bucketName}
       URL: ${zeropsSubdomain}
+      STORAGE_PATH: /mnt/sharedstorage
     ports:
       - port: 3000
         httpSupport: true
