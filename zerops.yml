@@ -13,7 +13,7 @@ zerops:
         - ./node_modules
     run:
       prepareCommands:
-        - [ ! -L /var/www/data ] && ln -s /mnt/sharedstorage /var/www/data
+        - "[ ! -L /var/www/data ] && ln -s /mnt/sharedstorage /var/www/data"
       start: node api/main
 
   - setup: app
