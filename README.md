@@ -66,12 +66,12 @@ services:
     type: object-storage
     policy: public-read
     objectStorageSize: 2
-    priority: 10
+    priority: 15
 
   - hostname: sharedstorage
     type: shared-storage
     mode: NON_HA
-    priority: 10
+    priority: 15
 
   - hostname: db
     type: postgresql@14
