@@ -12,6 +12,8 @@ zerops:
         - ./package.json
         - ./node_modules
     run:
+      init:
+        - ln -s /mnt/sharedstorage /var/www/data
       start: node api/main
 
   - setup: app
