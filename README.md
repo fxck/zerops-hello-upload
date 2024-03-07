@@ -28,6 +28,8 @@ services:
     enableSubdomainAccess: true
     buildFromGit: https://github.com/fxck/zerops-hello-upload
     minContainers: 1
+    mount:
+      - sharedstorage
     priority: 10
 
   - hostname: app
@@ -69,8 +71,7 @@ services:
   - hostname: sharedstorage
     type: shared-storage
     mode: NON_HA
-    mount:
-      - api
+    priority: 10
 
   - hostname: db
     type: postgresql@14
