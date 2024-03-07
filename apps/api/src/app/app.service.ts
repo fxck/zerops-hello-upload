@@ -62,8 +62,8 @@ export class AppService {
   }
 
   private async uploadToSharedStorage(file: Express.Multer.File): Promise<FileEntity> {
-    const relativeStoragePath = `data/${file.originalname}`;
-    const absoluteStoragePath = `/var/www/${relativeStoragePath}`;
+    const relativeStoragePath = `${file.originalname}`;
+    const absoluteStoragePath = `${this.configService.get<string>('STORAGE_PATH')}/${relativeStoragePath}`;
     await fs.mkdir(path.dirname(absoluteStoragePath), { recursive: true });
     await fs.writeFile(absoluteStoragePath, file.buffer);
     const accessiblePath = `${this.configService.get<string>('URL')}/${relativeStoragePath}`;
