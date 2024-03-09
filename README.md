@@ -105,7 +105,7 @@ services:
       DB_USER: ${db_user}
       NODE_ENV: production
       STORAGE_API_URL: ${storage_apiUrl}
-      STORAGE_SECRET_KEY: ${storage_secretKey}
+      STORAGE_SECRET_KEY: ${storage_secretAccessKey}
       STORAGE_ACCESS_KEY_ID: ${storage_accessKeyId}
       STORAGE_BUCKET_NAME: ${storage_bucketName}
       URL: ${zeropsSubdomain}
