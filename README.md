@@ -68,8 +68,8 @@ services:
 
   - hostname: storage
     type: object-storage
-    policy: public-read
     objectStorageSize: 2
+    objectStoragePolicy: public-read
     priority: 15
 
   - hostname: sharedstorage
@@ -154,8 +154,8 @@ services:
 
   - hostname: storage
     type: object-storage
-    policy: public-read
     objectStorageSize: 2
+    objectStoragePolicy: public-read
     priority: 15
 
   - hostname: sharedstorage
