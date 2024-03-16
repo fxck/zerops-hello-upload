@@ -3,7 +3,6 @@ import { promises as fs } from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { S3 } from 'aws-sdk';
-import * as path from 'path';
 import { Repository } from 'typeorm';
 import { FileEntity } from './file.entity';
 
